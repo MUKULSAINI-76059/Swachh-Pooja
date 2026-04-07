@@ -19,7 +19,7 @@ const ContactSection = () => (
           </a>
         ))}
         <a
-          href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20request%20a%20puja%20waste%20pickup"
+          href="https://wa.me/919876543210?text=Hi%2C%20I%20want%20to%20report%20puja%20waste%20on%20the%20road"
           target="_blank"
           rel="noopener noreferrer"
           className="flex items-center gap-3 bg-primary rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow"

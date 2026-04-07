@@ -5,7 +5,7 @@ const AboutSection = () => (
     <div className="container max-w-3xl text-center space-y-8">
       <h2 className="text-2xl md:text-4xl font-bold text-foreground">About Us</h2>
       <p className="text-muted-foreground text-lg leading-relaxed">
-        Every year, tons of puja materials end up in rivers and landfills, polluting our water and soil. At <strong className="text-primary">Puja Waste Pickup</strong>, we believe devotion and sustainability can go hand in hand.
+        Every year, tons of puja materials are dumped on roadsides, near rivers, and in public spaces — polluting our environment. At <strong className="text-primary">Puja Waste Pickup</strong>, we empower citizens to report roadside puja waste so our team can collect and compost it responsibly.
       </p>
       <div className="grid sm:grid-cols-3 gap-6">
         {[

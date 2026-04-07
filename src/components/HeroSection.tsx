@@ -6,11 +6,11 @@ const HeroSection = () => (
     <div className="container grid md:grid-cols-2 gap-10 items-center">
       <div className="space-y-6 animate-fade-in-up">
         <h1 className="text-3xl md:text-5xl font-bold leading-tight text-foreground">
-          Turn Your Puja Waste into Blessings for Nature{" "}
+          Spot Puja Waste on Roads? Report It, We'll Clean It!{" "}
           <span className="inline-block">🌱</span>
         </h1>
         <p className="text-lg text-muted-foreground max-w-lg">
-          We collect your used puja materials — flowers, coconuts, cloth & more — and convert them into eco-friendly compost. Good for dharti, good for dharma. 🙏
+          See puja materials — flowers, coconuts, cloth — dumped on roadsides or public areas? Just snap a photo and report it. Our team will collect and compost it. Clean streets, green dharti! 🙏
         </p>
         <div className="flex gap-3">
           <Button asChild size="lg">

@@ -1,9 +1,9 @@
 import { Camera, MapPin, Truck, Sprout } from "lucide-react";
 
 const steps = [
-  { icon: Camera, title: "Upload Photo", desc: "Snap a pic of your puja materials" },
-  { icon: MapPin, title: "Enter Address", desc: "Tell us where to pick up" },
-  { icon: Truck, title: "We Collect", desc: "Our team comes to your doorstep" },
+  { icon: Camera, title: "Spot & Snap", desc: "See puja waste on the road? Take a quick photo" },
+  { icon: MapPin, title: "Share Location", desc: "Tell us the exact spot or area" },
+  { icon: Truck, title: "We Collect", desc: "Our team goes to the location and picks it up" },
   { icon: Sprout, title: "We Compost", desc: "Waste becomes eco-friendly compost" },
 ];
 

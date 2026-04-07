@@ -1,9 +1,9 @@
 import { Recycle, TreePine, ThumbsUp } from "lucide-react";
 
 const benefits = [
-  { icon: Recycle, title: "Eco-Friendly Disposal", desc: "No more dumping in rivers. Your puja waste gets a second life as compost." },
+  { icon: Recycle, title: "Eco-Friendly Disposal", desc: "No more roadside dumping. Reported puja waste gets a second life as compost." },
   { icon: TreePine, title: "Supports Nature", desc: "The compost nurtures plants and trees — from waste to greenery." },
-  { icon: ThumbsUp, title: "Easy & Hassle-Free", desc: "Just upload, submit, and relax. We handle the rest at your doorstep." },
+  { icon: ThumbsUp, title: "Easy & Hassle-Free", desc: "Just spot, snap, and report. We handle the cleanup." },
 ];
 
 const BenefitsSection = () => (
