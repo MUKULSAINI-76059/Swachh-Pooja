@@ -16,7 +16,7 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b">
       <div className="container flex items-center justify-between h-16">
         <a href="#home" className="flex items-center gap-2 font-bold text-lg text-primary">
-          <Leaf className="h-6 w-6" /> Puja Waste Pickup
+          <Leaf className="h-6 w-6" /> SwachhPooja
         </a>
 
         {/* Desktop */}

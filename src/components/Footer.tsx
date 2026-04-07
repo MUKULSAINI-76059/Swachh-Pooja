@@ -5,7 +5,7 @@ const Footer = () => (
     <div className="container">
       <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div className="flex items-center gap-2 font-bold text-lg">
-          <Leaf className="h-5 w-5" /> Puja Waste Pickup
+          <Leaf className="h-5 w-5" /> SwachhPooja
         </div>
         <div className="flex flex-wrap gap-4 text-sm opacity-80">
           <a href="#home" className="hover:opacity-100 transition-opacity">Home</a>
@@ -16,7 +16,7 @@ const Footer = () => (
         </div>
       </div>
       <div className="mt-6 pt-6 border-t border-primary-foreground/20 text-center text-sm opacity-60">
-        © {new Date().getFullYear()} Puja Waste Pickup. Made with 🌿 for a greener future.
+        © {new Date().getFullYear()} SwachhPooja. Made with 🌿 for a greener future.
       </div>
     </div>
   </footer>
