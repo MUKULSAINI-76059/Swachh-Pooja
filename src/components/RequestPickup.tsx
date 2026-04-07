@@ -20,7 +20,7 @@ const RequestPickup = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSubmitted(true);
-    toast.success("Pickup request submitted! We'll contact you soon. 🙏");
+    toast.success("Report submitted! We'll clean it up soon. 🙏");
   };
 
   if (submitted) {
