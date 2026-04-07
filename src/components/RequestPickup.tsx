@@ -19,6 +19,19 @@ const RequestPickup = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const entry = {
+      id: Date.now(),
+      name: formData.get("name") as string,
+      phone: formData.get("phone") as string,
+      address: formData.get("address") as string,
+      time: formData.get("time") as string,
+      photo: preview || null,
+      submittedAt: new Date().toISOString(),
+    };
+    const existing = JSON.parse(localStorage.getItem("puja_requests") || "[]");
+    existing.push(entry);
+    localStorage.setItem("puja_requests", JSON.stringify(existing));
     setSubmitted(true);
     toast.success("Report submitted! We'll clean it up soon. 🙏");
   };
@@ -66,22 +79,22 @@ const RequestPickup = () => {
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
-            <Input id="name" placeholder="Your name" required />
+            <Input id="name" name="name" placeholder="Your name" required />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="phone">Phone Number</Label>
-            <Input id="phone" type="tel" placeholder="+91 98765 43210" required />
+            <Input id="phone" name="phone" type="tel" placeholder="+91 98765 43210" required />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="address">Waste Location</Label>
-            <Input id="address" placeholder="Road/area where you spotted the waste" required />
+            <Input id="address" name="address" placeholder="Road/area where you spotted the waste" required />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="time">Preferred Pickup Time</Label>
-            <Input id="time" placeholder="e.g. Morning 9-12" required />
+            <Input id="time" name="time" placeholder="e.g. Morning 9-12" required />
           </div>
 
           <Button type="submit" className="w-full" size="lg">
