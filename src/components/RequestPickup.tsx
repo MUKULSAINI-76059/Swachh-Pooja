@@ -79,7 +79,7 @@ const RequestPickup = () => {
 
           <div className="space-y-2">
             <Label htmlFor="name">Name</Label>
-            <Input id="name" placeholder="Your name" required />
+            <Input id="name" name="name" placeholder="Your name" required />
           </div>
 
           <div className="space-y-2">
