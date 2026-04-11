@@ -1,6 +1,6 @@
 <div align="center">
  
-![Typing Indicator](https://example.com/working-typing-svg)
+<img src="https://readme-typing-svg.demolab.com?font=Fira+Code&size=32&duration=3000&pause=1000&color=FF6B35&center=true&vCenter=true&width=600&lines=🪔+Swachh+Pooja;Clean+Worship%2C+Pure+Devotion;Bringing+Cleanliness+to+Sacred+Spaces" alt="Typing SVG" />
  
 <br/>
  
