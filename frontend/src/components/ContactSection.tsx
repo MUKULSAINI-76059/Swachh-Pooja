@@ -1,5 +1,9 @@
 import { Phone, Mail, MessageCircle, MapPin } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import MapComponent from "@/components/MapComponent";
+
+const OFFICE_ADDRESS = "5km Ahead, Farukh Nagar (Kherakhurrampur), Gurgaon, Haryana 122506";
+const MAP_QUERY_ADDRESS = "Kherakhurrampur, Farrukhnagar, Gurugram, Haryana 122506, India";
 
 const ContactSection = () => (
   <section id="contact" className="py-16 md:py-24 section-alt">
@@ -11,7 +15,7 @@ const ContactSection = () => (
         {[
           { icon: Phone, label: "+91 98773 63729", href: "tel:+919877363729" },
           { icon: Mail, label: "adityakumar@gmail.com", href: "mailto:adityakumar@gmail.com" },
-          { icon: MapPin, label: "Delhi NCR, India", href: "#" },
+          { icon: MapPin, label: OFFICE_ADDRESS, href: "#" },
         ].map((c, i) => (
           <a key={i} href={c.href} className="flex items-center gap-3 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
             <c.icon className="h-5 w-5 text-primary shrink-0" />
@@ -29,10 +33,15 @@ const ContactSection = () => (
         </a>
       </div>
 
-      {/* Future: Google Maps placeholder */}
-      <div className="rounded-xl border bg-muted h-48 flex items-center justify-center text-muted-foreground text-sm">
-        📍 Google Maps integration — coming soon
-      </div>
+      {/* Google Maps */}
+      <MapComponent 
+        latitude={28.4506}
+        longitude={76.8306}
+        address={MAP_QUERY_ADDRESS}
+        title={`SwachhPooja - ${OFFICE_ADDRESS}`}
+        height="300px"
+        zoom={16}
+      />
     </div>
   </section>
 );

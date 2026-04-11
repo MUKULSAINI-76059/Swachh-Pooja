@@ -6,6 +6,8 @@ import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import { LogOut, Trash2, Leaf, MapPin, User, CheckCircle, Search } from "lucide-react";
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || "http://localhost:6006";
+
 interface RequestEntry {
   id: string;
   userEmail: string;
@@ -46,7 +48,7 @@ const Admin = () => {
       }
       
       try {
-        const res = await fetch("http://localhost:5000/api/bookings", {
+        const res = await fetch(`${API_BASE_URL}/api/bookings`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {
@@ -57,7 +59,7 @@ const Admin = () => {
             address: b.address || "",
             time: b.date,
             notes: "", 
-            photo: null,
+            photo: b.wasteImageDataUrl || null,
             status: b.status,
             submittedAt: b.createdAt,
             assignedAgent: b.assignedAgent,
@@ -86,7 +88,7 @@ const Admin = () => {
   const updateStatus = async (id: string, newStatus: string) => {
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/bookings/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/bookings/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ status: newStatus })
@@ -107,7 +109,7 @@ const Admin = () => {
     
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch(`http://localhost:5000/api/bookings/${id}`, {
+      const res = await fetch(`${API_BASE_URL}/api/bookings/${id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json", "Authorization": `Bearer ${token}` },
         body: JSON.stringify({ assignedAgent: agentName, acceptanceTime: time, status: "In Progress" })
@@ -141,7 +143,7 @@ const Admin = () => {
               <Trash2 className="h-4 w-4 mr-1" /> Clear Data
             </Button>
             <Button variant="ghost" size="sm" onClick={handleLogout}>
-              <LogOut className="h-4 w-4 mr-1" /> Logout
+              <LogOut className="h-4 w-4  mr-1" /> Logout
             </Button>
           </div>
         </div>

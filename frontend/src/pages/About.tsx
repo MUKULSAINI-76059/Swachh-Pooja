@@ -9,59 +9,68 @@ const About = () => {
       <main className="flex-1 pt-24 pb-16">
         <div className="container mx-auto px-4 max-w-4xl">
           
-          <div className="text-center mb-16">
-            <span className="text-primary font-semibold tracking-wider uppercase text-sm mb-2 block">Our Story</span>
-            <h1 className="text-4xl md:text-6xl font-bold mb-6 text-foreground tracking-tight">Faith Meets Nature.</h1>
+          <div className="text-center mb-0">
+            <span className="text-primary font-semibold tracking-wider uppercase text-sm mb-2 block">About SwachhPooja</span>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-foreground tracking-tight">Clean Devotion for Tomorrow</h1>
             <p className="text-xl md:text-2xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-              We started with a simple belief: our devotion should nurture the environment, not pollute it.
+              Transforming puja waste into environmental action—one request at a time.
             </p>
           </div>
 
           <div className="prose prose-lg dark:prose-invert max-w-none space-y-8 text-muted-foreground">
             
-            <img src="https://images.unsplash.com/photo-1549487569-42b7852a36b2?auto=format&fit=crop&q=80" alt="Ganga River" className="w-full h-[400px] object-cover rounded-3xl shadow-md my-12" />
+                <img src="/images/about-first.jpg" alt="Sacred flowers" className="w-full h-[400px] object-cover rounded-3xl shadow-md my-12" style={{ objectPosition: "center 30%" }} />
 
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">The Unseen Problem</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">The Problem We're Solving</h2>
               <p>
-                In India, faith is a way of life. Millions of devotees offer beautiful, fragrant flowers to deities every single day. But what happens to the flowers once the prayers are over?
+                Every day, millions of flowers, incense sticks, and offerings are left at temples, homes, and sacred sites across India. While these expressions of devotion are beautiful, their disposal often harms our environment.
               </p>
               <p>
-                For generations, it has been a sacred tradition to immerse pooja offerings into our holy rivers like the Ganges and Yamuna. However, the modern reality is harsh. The flowers, often sprayed with chemical pesticides, rot in the water. Toxic dyes from incidental waste seep into the aquatic ecosystems. Instead of carrying our devotion to the heavens, we are inadvertently choking the very rivers we worship as Goddesses.
+                Many offerings end up in landfills, rivers, and roadsides—contributing to pollution. We realized that your faith shouldn't come at the cost of nature. That's why we created SwachhPooja—a simple way to ensure your spiritual practice respects Mother Earth.
               </p>
             </div>
 
             <div className="pl-6 border-l-4 border-primary my-10 py-2">
               <p className="text-2xl font-medium text-foreground italic leading-relaxed m-0">
-                "Our rivers endure the weight of our devotion. It's time our devotion took care of our rivers."
+                "Devotion without pollution. Faith that heals, not harms."
               </p>
             </div>
 
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">A Community-Driven Mission</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">How We're Different</h2>
               <p>
-                SwachhPooja was born out of a profound heartache witnessing polluted riverbanks after majestic festivals. A small group of friends—college students, local volunteers, and distressed devotees—decided that action was long overdue.
+                SwachhPooja connects households and temples directly to our pickup teams. Simply request a pickup through our app, and we'll collect your puja waste responsibly. No hassle, no guilt—just clean devotion.
               </p>
               <p>
-                We realized that if we could intercept these sacred offerings <em>before</em> they reached the water, we could honor the devotion behind them. We started going door-to-door, speaking to temples and households, providing a respectful alternative. What started in one neighborhood quickly grew into a massive community-driven movement. 
+                Unlike traditional waste disposal, we ensure every offering is handled with respect. We compost organic materials naturally, creating nutrient-rich soil that supports local farmers and community gardens. Your waste becomes nature's gift.
               </p>
               <p>
-                Today, people don't just hand over their waste; they actively join us on weekends. Grandparents bring their grandchildren to our compost sites, teaching them that true faith involves tending to Mother Nature.
+                We're building a movement where spirituality and sustainability walk hand in hand.
               </p>
             </div>
 
-            <img src="https://images.unsplash.com/photo-1518531933037-91b2f5f229cc?auto=format&fit=crop&q=80" alt="Hands holding soil" className="w-full h-[400px] object-cover rounded-3xl shadow-md my-12" />
+            <img src="/images/about-community-service.jpg" alt="Community service" className="w-full h-[400px]  rounded-3xl shadow-md my-12" />
 
             <div>
-              <h2 className="text-3xl font-bold text-foreground mb-4">The Circle of Life</h2>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Our Impact</h2>
               <p>
-                At SwachhPooja, we don't treat floral offerings as waste. We collect them with the exact dignity with which they were offered. 
+                Since launch, we've collected and responsibly handled thousands of kilograms of puja waste. Our composting process has created organic fertilizer now used in urban gardens, temples, and agricultural lands.
               </p>
               <p>
-                Through completely natural composting methods, these wilted flowers undergo a beautiful transformation. The same marigolds and roses that graced altars are returned to the earth as nutrient-rich, organic compost. We then distribute this "blessed" soil back to farmers, nurseries, and home gardeners. 
+                But numbers don't tell the full story. What matters most is the growing community of believers who understand that true devotion means giving back. Volunteers of all ages join us regularly—students, homemakers, retirees—all united by a simple belief: protecting nature is a spiritual act.
+              </p>
+            </div>
+
+            <img src="/images/about-green-nature.jpg" alt="Green nature" className="w-full h-[400px] object-cover rounded-3xl shadow-md my-12" />
+
+            <div>
+              <h2 className="text-3xl font-bold text-foreground mb-4">Join the Movement</h2>
+              <p>
+                Every pickup request you make, every volunteer hour you contribute, every conversation you start—it all creates ripples of change. Together, we're proving that environmental responsibility and spiritual practice aren't opposites. They're partners.
               </p>
               <p>
-                From blooming in a field, to honoring the divine, to nurturing new life in the soil—we ensure the circle remains unbroken.
+                Whether you request a pickup from your home, volunteer with our teams, or simply spread awareness, you're part of something larger. You're part of a cleaner, greener, more mindful India.
               </p>
             </div>
 

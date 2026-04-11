@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Menu, X, Leaf, UserCircle } from "lucide-react";
+import { Menu, X, Leaf, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 
@@ -7,17 +7,36 @@ const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const [isLogged, setIsLogged] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => {
     const checkAuth = () => {
+      const token = localStorage.getItem("token");
       const mockStr = localStorage.getItem("mock_login");
-      if (mockStr) {
-        setIsLogged(true);
-        if (JSON.parse(mockStr).role === "Admin") setIsAdmin(true);
+
+      if (!token && !mockStr) {
+        setIsLogged(false);
+        return;
       }
+
+      if (mockStr) {
+        try {
+          JSON.parse(mockStr);
+          setIsLogged(true);
+          return;
+        } catch {
+          localStorage.removeItem("mock_login");
+        }
+      }
+
+      setIsLogged(Boolean(token));
     };
+
     checkAuth();
+
+    const handleStorageChange = () => checkAuth();
+    window.addEventListener("storage", handleStorageChange);
+
+    return () => window.removeEventListener("storage", handleStorageChange);
   }, [location.pathname]);
 
   const links = [
@@ -26,6 +45,7 @@ const Navbar = () => {
     { label: "Activity", href: "/activity" },
     { label: "Support NGO", href: "/support" },
     { label: "Contact", href: "/contact" },
+    { label: "Dashboard", href: "/dashboard" },
   ];
 
   return (
@@ -44,10 +64,18 @@ const Navbar = () => {
           ))}
           
           {isLogged ? (
-            <Button asChild size="sm" variant="outline">
-              <Link to={isAdmin ? "/admin" : "/dashboard"} className="flex items-center gap-2">
-                <UserCircle className="h-4 w-4" /> Dashboard
-              </Link>
+            <Button
+              size="sm"
+              variant="outline"
+              className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+              onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("mock_login");
+              setIsLogged(false);
+              window.location.href = "/";
+            }}>
+              <LogOut className="mr-1.5 h-4 w-4" />
+              Logout
             </Button>
           ) : (
             <div className="flex items-center gap-2">
@@ -79,8 +107,19 @@ const Navbar = () => {
             
             <div className="pt-2 flex flex-col gap-2">
               {isLogged ? (
-                <Button asChild size="sm" className="w-full justify-start" onClick={() => setOpen(false)}>
-                  <Link to={isAdmin ? "/admin" : "/dashboard"}><UserCircle className="mr-2 h-4 w-4" /> Dashboard</Link>
+                <Button
+                  size="sm"
+                  variant="outline"
+                  className="w-full justify-start border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                  onClick={() => {
+                  localStorage.removeItem("token");
+                  localStorage.removeItem("mock_login");
+                  setIsLogged(false);
+                  setOpen(false);
+                  window.location.href = "/";
+                }}>
+                  <LogOut className="mr-1.5 h-4 w-4" />
+                  Logout
                 </Button>
               ) : (
                 <>

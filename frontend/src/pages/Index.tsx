@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { LogOut, Leaf, Plus } from "lucide-react";
 import Navbar from "@/components/Navbar";
+import { API_BASE_URL, getApiErrorMessage } from "@/lib/api";
 
 interface RequestEntry {
   id: number;
@@ -22,7 +23,7 @@ interface RequestEntry {
 const Index = () => {
   const [requests, setRequests] = useState<RequestEntry[]>([]);
   const [loading, setLoading] = useState(true);
-  const [user, setUser] = useState<{ email?: string; [key: string]: unknown } | null>(null);
+  const [user, setUser] = useState<{ email?: string;[key: string]: unknown } | null>(null);
   const navigate = useNavigate();
 
   // Form states
@@ -38,14 +39,14 @@ const Index = () => {
         navigate("/login");
         return;
       }
-      
+
       const userStr = localStorage.getItem("mock_login");
       if (userStr) {
         setUser(JSON.parse(userStr));
       }
-      
+
       try {
-        const res = await fetch("http://localhost:5000/api/bookings", {
+        const res = await fetch(`${API_BASE_URL}/api/bookings`, {
           headers: { "Authorization": `Bearer ${token}` }
         });
         if (res.ok) {
@@ -64,7 +65,7 @@ const Index = () => {
       } catch (err) {
         console.error("Booking fetch error:", err);
       }
-      
+
       setLoading(false);
     };
     fetchDashboard();
@@ -90,9 +91,20 @@ const Index = () => {
       return;
     }
 
+    const selectedDate = new Date(time);
+    if (Number.isNaN(selectedDate.getTime())) {
+      toast.error("Please choose a valid pickup date and time.");
+      return;
+    }
+
+    if (selectedDate.getTime() < Date.now()) {
+      toast.error("Pickup date and time cannot be in the past.");
+      return;
+    }
+
     const token = localStorage.getItem("token");
     try {
-      const res = await fetch("http://localhost:5000/api/bookings", {
+      const res = await fetch(`${API_BASE_URL}/api/bookings`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -100,7 +112,7 @@ const Index = () => {
         },
         body: JSON.stringify({
           address,
-          date: time
+          date: selectedDate.toISOString()
         })
       });
 
@@ -116,7 +128,7 @@ const Index = () => {
           status: data.status,
           submittedAt: data.createdAt,
         };
-        
+
         setRequests([newReq, ...requests]);
         setAddress("");
         setTime("");
@@ -124,11 +136,11 @@ const Index = () => {
         setPhoto(null);
         toast.success("Pickup Request Confirmed!");
       } else {
-        const errorData = await res.json();
-        toast.error(errorData.error || "Failed to submit request.");
+        const errorData = await res.json().catch(() => ({}));
+        toast.error(getApiErrorMessage(errorData.error || errorData.message || errorData.msg, "Failed to submit request."));
       }
     } catch (err) {
-      toast.error("Network error submitting request.");
+      toast.error(getApiErrorMessage(err, "Network error submitting request."));
     }
   };
 
@@ -190,46 +202,30 @@ const Index = () => {
                           <p className="font-semibold text-lg">{r.address}</p>
                           <p className="text-sm text-muted-foreground">{new Date(r.submittedAt).toLocaleDateString()}</p>
                         </div>
-                        <span className={`px-2.5 py-1 text-xs rounded-full font-medium whitespace-nowrap ${
-                          r.status === 'Completed' ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400' :
-                          r.status === 'Pending' ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400' :
-                          'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
-                        }`}>
+                        <span
+                          className={`px-2.5 py-1 text-xs rounded-full font-medium whitespace-nowrap ${r.status === 'Completed'
+                            ? 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-400'
+                            : r.status === 'Pending'
+                              ? 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400'
+                              : 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-400'
+                            }`}
+                        >
                           {r.status}
                         </span>
                       </div>
-                      <p className="text-sm"><span className="font-medium">Preferred Time:</span> {new Date(r.time).toLocaleString()}</p>
-                      {r.notes && <p className="text-sm text-muted-foreground"><span className="font-medium text-foreground">Notes:</span> {r.notes}</p>}
+                      <p className="text-sm">
+                        <span className="font-medium">Preferred Time:</span> {new Date(r.time).toLocaleString()}
+                      </p>
+                      {r.notes && (
+                        <p className="text-sm text-muted-foreground">
+                          <span className="font-medium text-foreground">Notes:</span> {r.notes}
+                        </p>
+                      )}
                     </div>
                   </div>
                 ))}
               </div>
             )}
-          </div>
-
-          <div>
-            <div className="bg-card border rounded-xl p-6 shadow-sm sticky top-24">
-              <h2 className="text-xl font-bold mb-4 flex items-center"><Plus className="h-5 w-5 mr-2" /> New Request</h2>
-              <form onSubmit={handleSubmit} className="space-y-4">
-                <div className="space-y-2">
-                  <Label htmlFor="address">Full Address</Label>
-                  <Input id="address" value={address} onChange={(e) => setAddress(e.target.value)} placeholder="123 Temple Road, City" required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="time">Preferred Pickup Time</Label>
-                  <Input id="time" type="datetime-local" value={time} onChange={(e) => setTime(e.target.value)} required />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="notes">Additional Notes</Label>
-                  <Input id="notes" value={notes} onChange={(e) => setNotes(e.target.value)} placeholder="Quantity of waste, special instructions..." />
-                </div>
-                <div className="space-y-2">
-                  <Label htmlFor="photo">Upload Image</Label>
-                  <Input id="photo" type="file" accept="image/*" onChange={handleImageChange} className="cursor-pointer" />
-                </div>
-                <Button type="submit" className="w-full">Submit Request</Button>
-              </form>
-            </div>
           </div>
         </div>
       </div>

@@ -6,10 +6,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Leaf, UserPlus } from "lucide-react";
+import { API_BASE_URL, getApiErrorMessage } from "@/lib/api";
 
 const Signup = () => {
   const [fullName, setFullName] = useState("");
-  const [role, setRole] = useState("User");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
@@ -18,31 +18,50 @@ const Signup = () => {
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (!fullName.trim()) {
+      toast.error("Please enter your full name.");
+      return;
+    }
+
+    if (!email.includes("@")) {
+      toast.error("Please enter a valid email address.");
+      return;
+    }
+
     if (password.length < 6) {
       toast.error("Password must be at least 6 characters");
       return;
     }
+    
     setLoading(true);
     
     try {
-      const res = await fetch("http://localhost:5000/api/auth/register", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: fullName, email, password, role, phone })
+        body: JSON.stringify({ name: fullName, email, password, role: "User", phone })
       });
       const data = await res.json();
       setLoading(false);
       
       if (!res.ok) {
-        toast.error(data.error || data.msg || "Registration failed");
+        toast.error(getApiErrorMessage(data.error || data.msg || data.message, "Registration failed"));
         return;
       }
-      
-      toast.success("Signup successful! Please login.");
-      navigate("/login");
+
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("mock_login", JSON.stringify(data.user));
+      toast.success("Signup successful!");
+
+      if (data.user?.role === "Admin") {
+        navigate("/admin");
+      } else {
+        navigate("/");
+      }
     } catch (err: any) {
       setLoading(false);
-      toast.error(err.message || "Network error. Make sure backend is running.");
+      toast.error(getApiErrorMessage(err, "Network error. Make sure backend is running."));
     }
   };
 
@@ -59,13 +78,6 @@ const Signup = () => {
           <div className="space-y-2">
             <Label htmlFor="fullName">Full Name</Label>
             <Input id="fullName" value={fullName} onChange={(e) => setFullName(e.target.value)} placeholder="John Doe" required />
-          </div>
-          <div className="space-y-2">
-            <Label htmlFor="role">Role</Label>
-            <select id="role" value={role} onChange={(e) => setRole(e.target.value)} className="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50" required>
-              <option value="User">User</option>
-              <option value="Admin">Admin</option>
-            </select>
           </div>
           <div className="space-y-2">
             <Label htmlFor="email">Email</Label>

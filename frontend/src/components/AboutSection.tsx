@@ -1,7 +1,7 @@
 import { Heart, Droplets, TreePine } from "lucide-react";
 
 const AboutSection = () => (
-  <section id="about" className="py-16 md:py-24 section-alt">
+  <section id="about" className="py-20 md:py-20 section-alt">
     <div className="container max-w-3xl text-center space-y-8">
       <h2 className="text-2xl md:text-4xl font-bold text-foreground">About Us</h2>
       <p className="text-muted-foreground text-lg leading-relaxed">

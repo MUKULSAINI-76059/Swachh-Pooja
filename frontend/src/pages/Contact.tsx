@@ -6,22 +6,46 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Phone, Mail, MapPin, Send } from "lucide-react";
+import { API_BASE_URL, getApiErrorMessage } from "@/lib/api";
+
+const OFFICE_ADDRESS = "5km Ahead, Farukh Nagar (Kherakhurrampur), Gurgaon, Haryana 122506";
 
 const Contact = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name || !email || !message) {
       toast.error("Please fill all fields");
       return;
     }
-    toast.success("Message sent successfully! We will get back to you soon.");
-    setName("");
-    setEmail("");
-    setMessage("");
+
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${API_BASE_URL}/api/contact`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), message: message.trim() }),
+      });
+
+      if (!res.ok) {
+        const errData = await res.json().catch(() => ({}));
+        toast.error(getApiErrorMessage(errData.error || errData.message, "Failed to send your message."));
+        return;
+      }
+
+      toast.success("Message sent successfully! We will get back to you soon.");
+      setName("");
+      setEmail("");
+      setMessage("");
+    } catch (err) {
+      toast.error(getApiErrorMessage(err, "Network error. Please try again."));
+    } finally {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -47,7 +71,7 @@ const Contact = () => {
                   <div>
                     <h3 className="text-xl font-bold mb-1">Call Us</h3>
                     <p className="text-muted-foreground mb-2">We are available Mon-Fri, 9am - 6pm.</p>
-                    <a href="tel:+919876543210" className="text-lg font-medium text-foreground hover:text-primary transition-colors">+91 9876543210</a>
+                    <a href="tel:+919877363729" className="text-lg font-medium text-foreground hover:text-primary transition-colors">+91 9877363729</a>
                   </div>
                 </div>
 
@@ -58,7 +82,7 @@ const Contact = () => {
                   <div>
                     <h3 className="text-xl font-bold mb-1">Email Us</h3>
                     <p className="text-muted-foreground mb-2">Drop us a line anytime.</p>
-                    <a href="mailto:support@swachhpooja.org" className="text-lg font-medium text-foreground hover:text-primary transition-colors">support@swachhpooja.org</a>
+                    <a href="mailto:aditya.kumar@dbssgroup.com" className="text-lg font-medium text-foreground hover:text-primary transition-colors">aditya.kumar@dbssgroup.com</a>
                   </div>
                 </div>
 
@@ -68,7 +92,7 @@ const Contact = () => {
                   </div>
                   <div>
                     <h3 className="text-xl font-bold mb-1">Visit Us</h3>
-                    <p className="text-muted-foreground">123 Green Earth Road,<br/>Eco City, India 110001</p>
+                    <p className="text-muted-foreground">{OFFICE_ADDRESS}</p>
                   </div>
                 </div>
               </div>
@@ -80,7 +104,7 @@ const Contact = () => {
                 </h3>
                 <p className="text-muted-foreground mb-4">Get instant replies for pickup status and quick queries.</p>
                 <Button className="bg-[#25D366] hover:bg-[#20bd5a] text-white w-full sm:w-auto" asChild>
-                  <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
+                  <a href="https://wa.me/919877363729" target="_blank" rel="noreferrer">Chat on WhatsApp</a>
                 </Button>
               </div>
             </div>
@@ -107,8 +131,8 @@ const Contact = () => {
                     className="flex min-h-[120px] w-full rounded-md border border-input bg-background px-3 py-2 text-sm ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50"
                   />
                 </div>
-                <Button type="submit" className="w-full h-11 mt-2">
-                  <Send className="h-4 w-4 mr-2" /> Send Message
+                <Button type="submit" className="w-full h-11 mt-2" disabled={submitting}>
+                  <Send className="h-4 w-4 mr-2" /> {submitting ? "Sending..." : "Send Message"}
                 </Button>
               </form>
             </div>

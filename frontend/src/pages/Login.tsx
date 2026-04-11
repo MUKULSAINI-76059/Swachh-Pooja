@@ -6,6 +6,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { toast } from "sonner";
 import { Leaf, LogIn } from "lucide-react";
+import { API_BASE_URL, getApiErrorMessage } from "@/lib/api";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -18,7 +19,7 @@ const Login = () => {
     setLoading(true);
     
     try {
-      const res = await fetch("http://localhost:5000/api/auth/login", {
+      const res = await fetch(`${API_BASE_URL}/api/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -27,7 +28,7 @@ const Login = () => {
       setLoading(false);
       
       if (!res.ok) {
-        toast.error(data.error || data.msg || "Login failed");
+        toast.error(getApiErrorMessage(data.error || data.msg || data.message, "Login failed"));
         return;
       }
       
@@ -38,11 +39,11 @@ const Login = () => {
       if (data.user.role === "Admin") {
         navigate("/admin");
       } else {
-        navigate("/dashboard");
+        navigate("/");
       }
     } catch (err: any) {
       setLoading(false);
-      toast.error(err.message || "Network error. Make sure backend is running.");
+      toast.error(getApiErrorMessage(err, "Network error. Make sure backend is running."));
     }
   };
 
@@ -74,7 +75,7 @@ const Login = () => {
           Don't have an account? <Link to="/signup" className="text-primary hover:underline">Sign up</Link>
         </p>
         <p className="text-center text-xs text-muted-foreground mt-4">
-          <Link to="/home" className="text-primary hover:underline">← Back to Home</Link>
+          <Link to="/" className="text-primary hover:underline">← Back to Home</Link>
         </p>
       </div>
     </div>
