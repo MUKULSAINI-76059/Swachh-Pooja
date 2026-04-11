@@ -139,9 +139,11 @@ http://localhost:5173
  
 > *Coming Soon — Add your app screenshots here!*
  
-| Home Page | Dashboard | Reports |
-|-----------|-----------|---------|
-| ![home](#) | ![dashboard](#) | ![reports](#) |
+| Home Page | Dashboard | Supports |
+| <img width="1852" height="889" alt="image" src="https://github.com/user-attachments/assets/9b2cb54d-eedb-4588-92c1-c7acc8df8280" />
+ | <img width="1894" height="876" alt="image" src="https://github.com/user-attachments/assets/1e367c17-caf4-4f9c-8938-47fb418d1647" />
+ | <img width="1898" height="886" alt="image" src="https://github.com/user-attachments/assets/dd4cba25-31cf-4fe3-ac16-2905e318e720" />
+ |
  
 ---
  
