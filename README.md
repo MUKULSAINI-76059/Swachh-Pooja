@@ -1,6 +1,8 @@
 <div align="center">
  
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Fira+Code&weight=700&size=32&duration=3000&pause=1000&color=FF6B35&center=true&vCenter=true&width=600&lines=%F0%9F%AA%94+Swachh+Pooja;Clean+Worship%2C+Pure+Devotion;Bringing+Cleanliness+to+Sacred+Spaces)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Nunito&weight=900&size=46&duration=2600&pause=700&color=FF8C00&background=00000000&center=true&vCenter=true&width=880&height=100&lines=🙏+Swachh+Pooja+—+Clean+the+Sacred;♻️+We+Manage+It+Smartly;🌸+Devotion+%2B+Cleanliness+%3D+True+Pooja;🌱+Green+Future%2C+Pure+Worship;🔥+Where+Faith+Meets+Responsibility)](https://git.io/typing-svg)
+
+---
  
 <br/>
  
