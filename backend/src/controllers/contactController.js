@@ -15,9 +15,9 @@ exports.createContactMessage = async (req, res) => {
       message: String(message).trim(),
     });
 
-    setImmediate(() => {
-    adminContactEmail(saved);
-    userContactConfirmationEmail(saved);
+    setImmediate( async () => {
+     await adminContactEmail(saved);
+    await userContactConfirmationEmail(saved);
   });
 
     return res.status(201).json({ success: true, message: 'Message submitted successfully.' });

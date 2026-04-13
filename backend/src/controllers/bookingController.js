@@ -10,16 +10,20 @@ exports.createBooking = async (req, res) => {
 
     const newBooking = new Booking(bookingPayload);
     const booking = await newBooking.save();
+    const populatedBooking = await booking.populate('user', 'email name phone');
+    
+
 
     // Respond immediately to user - don't wait for emails
-    res.json(booking);
+    res.json(populatedBooking);
 
 
      // ✅ Background email (non-blocking)
     setImmediate(async () => {
       try {
-        await adminRequestEmail(booking);
-        await userRequestConfirmationEmail(booking, true); // For agent notification
+        await adminRequestEmail(populatedBooking);
+        await userRequestConfirmationEmail(populatedBooking, true);
+       // For agent notification
 
       } catch (emailError) {
         console.error('Email Error:', emailError.message);
@@ -63,9 +67,9 @@ exports.updateBookingStatus = async (req, res) => {
     // Respond immediately
     res.json(booking);
 
-    setImmediate(() => {
-      bookingStatusUpdateEmail(booking);
-      adminStatusUpdateEmail(booking);
+    setImmediate(async () => {
+      await bookingStatusUpdateEmail(booking);
+       await adminStatusUpdateEmail(booking);
     });
   } catch (err) {
     if (res.headersSent) {

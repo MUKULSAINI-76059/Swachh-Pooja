@@ -4,12 +4,60 @@ import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
 import { API_BASE_URL } from "@/lib/api";
 
+const getTokenExpiryMs = (token: string): number | null => {
+  try {
+    const payloadPart = token.split(".")[1];
+    if (!payloadPart) return null;
+
+    const base64 = payloadPart.replace(/-/g, "+").replace(/_/g, "/");
+    const paddedBase64 = base64.padEnd(Math.ceil(base64.length / 4) * 4, "=");
+    const payload = JSON.parse(atob(paddedBase64)) as { exp?: number };
+
+    if (!payload.exp) return null;
+    return payload.exp * 1000;
+  } catch {
+    return null;
+  }
+};
+
 const Navbar = () => {
   const [open, setOpen] = useState(false);
   const location = useLocation();
   const [isLogged, setIsLogged] = useState(false);
 
+  const clearSessionAndRedirect = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("mock_login");
+    setIsLogged(false);
+    window.location.href = "/";
+  };
+
   useEffect(() => {
+    let logoutTimer: ReturnType<typeof setTimeout> | null = null;
+
+    const scheduleAutoLogout = () => {
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+        logoutTimer = null;
+      }
+
+      const token = localStorage.getItem("token");
+      if (!token) return;
+
+      const expiryTime = getTokenExpiryMs(token);
+      if (!expiryTime) return;
+
+      const remainingMs = expiryTime - Date.now();
+      if (remainingMs <= 0) {
+        clearSessionAndRedirect();
+        return;
+      }
+
+      logoutTimer = setTimeout(() => {
+        clearSessionAndRedirect();
+      }, remainingMs);
+    };
+
     const checkAuth = () => {
       const token = localStorage.getItem("token");
       const mockStr = localStorage.getItem("mock_login");
@@ -30,6 +78,7 @@ const Navbar = () => {
       }
 
       setIsLogged(Boolean(token));
+      scheduleAutoLogout();
     };
 
     checkAuth();
@@ -37,7 +86,12 @@ const Navbar = () => {
     const handleStorageChange = () => checkAuth();
     window.addEventListener("storage", handleStorageChange);
 
-    return () => window.removeEventListener("storage", handleStorageChange);
+    return () => {
+      window.removeEventListener("storage", handleStorageChange);
+      if (logoutTimer) {
+        clearTimeout(logoutTimer);
+      }
+    };
   }, [location.pathname]);
 
   const links = [
@@ -62,10 +116,7 @@ const Navbar = () => {
         });
       }
     } finally {
-      localStorage.removeItem("token");
-      localStorage.removeItem("mock_login");
-      setIsLogged(false);
-      window.location.href = "/";
+      clearSessionAndRedirect();
     }
   };
 

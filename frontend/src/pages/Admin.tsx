@@ -105,7 +105,17 @@ const Admin = () => {
   const assignAgent = async (id: string) => {
     const agentName = prompt("Enter agent name to assign:");
     if (!agentName) return;
-    const time = new Date().toLocaleString();
+    const time = new Date().toLocaleString("en-IN", {
+      timeZone: "Asia/Kolkata",
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      hour: "2-digit",
+      minute: "2-digit",
+      second: "2-digit",
+      hour12: true,
+      timeZoneName: "short",
+    });
     
     const token = localStorage.getItem("token");
     try {

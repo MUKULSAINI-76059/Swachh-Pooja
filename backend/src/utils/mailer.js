@@ -45,11 +45,34 @@ const sendEmail = async ({ to, subject, text, html }) => {
       html,
     });
 
+    console.log(`Email sent to ${to}: ${info.messageId}`);
+
     return { success: true, messageId: info.messageId };
   } catch (error) {
     console.error('Error sending email:', error.message);
     return { success: false, reason: error.message };
   }
+};
+
+const formatIndiaDateTime = (value) => {
+  if (!value) return null;
+
+  const parsed = new Date(value);
+  if (Number.isNaN(parsed.getTime())) {
+    return String(value);
+  }
+
+  return parsed.toLocaleString('en-IN', {
+    timeZone: 'Asia/Kolkata',
+    day: '2-digit',
+    month: 'short',
+    year: 'numeric',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit',
+    hour12: true,
+    timeZoneName: 'short',
+  });
 };
 
 
@@ -184,7 +207,7 @@ async function registerEmail(userEmail, name){
 }
 
 async function adminNewUserEmail(userEmail, name, phone) {
-  const to = userEmail
+  const to = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
   const upperName = name ? name.toUpperCase() : "USER";
 
   const subject = "🚨 New User Registered on SwachhPooja";
@@ -284,6 +307,8 @@ async function adminNewUserEmail(userEmail, name, phone) {
 
 async function adminRequestEmail(request) {
   const to = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+  const formattedRequestDate = formatIndiaDateTime(request.date) || 'Not Provided';
+  const formattedRequestAcceptanceTime = formatIndiaDateTime(request.acceptanceTime) || 'Not Yet Accepted';
 
   const subject = "📢 New Pickup Request - SwachhPooja";
 
@@ -300,11 +325,11 @@ async function adminRequestEmail(request) {
       📱 Phone: ${request.reporterPhone || "Not Provided"}
       📍 Address: ${request.address || "Not Provided"}
       
-      📅 Date: ${request.date}
+      📅 Date: ${formattedRequestDate}
       📌 Status: ${request.status}
       
       🚚 Assigned Agent: ${request.assignedAgent || "Not Assigned"}
-      ⏱ Acceptance Time: ${request.acceptanceTime || "Not Yet Accepted"}
+      ⏱ Acceptance Time: ${formattedRequestAcceptanceTime}
       
       ━━━━━━━━━━━━━━━━━━━━━━━
       
@@ -342,21 +367,12 @@ async function adminRequestEmail(request) {
             <p><strong>📱 Phone:</strong> ${request.reporterPhone || "Not Provided"}</p>
             <p><strong>📍 Address:</strong> ${request.address || "Not Provided"}</p>
             <hr style="margin:15px 0;"/>
-            <p><strong>📅 Date:</strong> ${request.date}</p>
+            <p><strong>📅 Date:</strong> ${formattedRequestDate}</p>
             <p><strong>📌 Status:</strong> ${request.status}</p>
             <p><strong>🚚 Assigned Agent:</strong> ${request.assignedAgent || "Not Assigned"}</p>
-            <p><strong>⏱ Acceptance Time:</strong> ${request.acceptanceTime || "Not Yet Accepted"}</p>
+            <p><strong>⏱ Acceptance Time:</strong> ${formattedRequestAcceptanceTime}</p>
           </div>
 
-          ${
-            request.wasteImageDataUrl
-              ? `<div style="text-align:center;margin:20px 0;">
-                   <p style="font-size:14px;color:#555;">📸 Uploaded Image:</p>
-                   <img src="${request.wasteImageDataUrl}" alt="Waste Image" 
-                        style="max-width:100%;border-radius:10px;border:1px solid #ddd;"/>
-                 </div>`
-              : ""
-          }
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
@@ -386,6 +402,7 @@ async function adminRequestEmail(request) {
   </div>
   `;
 
+  console.log("admin", to)
   await sendEmail({
     to,
     subject,
@@ -394,10 +411,11 @@ async function adminRequestEmail(request) {
   });
 }
 
-async function userRequestConfirmationEmail(booking) {
-  const to = booking?.user?.email || booking.email; // adjust if needed
+async function userRequestConfirmationEmail(populatedBooking, isAgentNotification = false) {
+  const to = populatedBooking?.user?.email || populatedBooking.email;// adjust if needed
+  const formattedBookingDate = formatIndiaDateTime(populatedBooking.date) || 'Not Provided';
 
-  const name = booking.reporterName || "User";
+  const name = populatedBooking.reporterName || "User";
   const upperName = name ? name.toUpperCase() : "USER";
 
   const subject = "✅ Your Pickup Request is Received - SwachhPooja";
@@ -413,11 +431,11 @@ async function userRequestConfirmationEmail(booking) {
       📋 Your Request Details:
       ━━━━━━━━━━━━━━━━━━━━━━━
       
-      📍 Address: ${booking.address || "Not Provided"}
-      📅 Date: ${booking.date}
-      📌 Status: ${booking.status}
+      📍 Address: ${populatedBooking.address || "Not Provided"}
+      📅 Date: ${formattedBookingDate}
+      📌 Status: ${populatedBooking.status}
       
-      🚚 Assigned Agent: ${booking.assignedAgent || "Will be assigned soon"}
+      🚚 Assigned Agent: ${populatedBooking.assignedAgent || "Will be assigned soon"}
       
       ━━━━━━━━━━━━━━━━━━━━━━━
       
@@ -454,21 +472,11 @@ async function userRequestConfirmationEmail(booking) {
 
           <!-- Details -->
           <div style="background:#f9fafb;padding:20px;border-radius:10px;margin:20px 0;">
-            <p><strong>📍 Address:</strong> ${booking.address || "Not Provided"}</p>
-            <p><strong>📅 Date:</strong> ${booking.date}</p>
-            <p><strong>📌 Status:</strong> ${booking.status}</p>
-            <p><strong>🚚 Agent:</strong> ${booking.assignedAgent || "Will be assigned soon"}</p>
+            <p><strong>📍 Address:</strong> ${populatedBooking.address || "Not Provided"}</p>
+            <p><strong>📅 Date:</strong> ${formattedBookingDate}</p>
+            <p><strong>📌 Status:</strong> ${populatedBooking.status}</p>
+            <p><strong>🚚 Agent:</strong> ${populatedBooking.assignedAgent || "Will be assigned soon"}</p>
           </div>
-
-          ${
-            booking.wasteImageDataUrl
-              ? `<div style="text-align:center;margin:20px 0;">
-                   <p style="font-size:14px;color:#555;">📸 Your Uploaded Image:</p>
-                   <img src="${booking.wasteImageDataUrl}" 
-                        style="max-width:100%;border-radius:10px;border:1px solid #ddd;"/>
-                 </div>`
-              : ""
-          }
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
@@ -513,6 +521,7 @@ async function userRequestConfirmationEmail(booking) {
 async function bookingStatusUpdateEmail(booking) {
   const user = booking.user; // make sure populated
   const to = user?.email || booking.email;
+  const formattedBookingDate = formatIndiaDateTime(booking.date) || 'Not Provided';
 
   const name = booking.reporterName || user?.name || "User";
   const upperName = name ? name.toUpperCase() : "USER";
@@ -551,7 +560,7 @@ async function bookingStatusUpdateEmail(booking) {
       ━━━━━━━━━━━━━━━━━━━━━━━
       
       📍 Address: ${booking.address || "Not Provided"}
-      📅 Date: ${booking.date}
+      📅 Date: ${formattedBookingDate}
       📌 Status: ${status}
       
       ${statusMessage}
@@ -587,7 +596,7 @@ async function bookingStatusUpdateEmail(booking) {
           <!-- Status Box -->
           <div style="background:#f9fafb;padding:20px;border-radius:10px;margin:20px 0;">
             <p><strong>📍 Address:</strong> ${booking.address || "Not Provided"}</p>
-            <p><strong>📅 Date:</strong> ${booking.date}</p>
+            <p><strong>📅 Date:</strong> ${formattedBookingDate}</p>
             <p><strong>📌 Status:</strong> ${status}</p>
           </div>
 
@@ -634,6 +643,8 @@ async function bookingStatusUpdateEmail(booking) {
 
 async function adminStatusUpdateEmail(booking) {
   const to = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
+  const formattedAdminDate = formatIndiaDateTime(booking.date) || 'Not Provided';
+  const formattedAdminAcceptanceTime = formatIndiaDateTime(booking.acceptanceTime) || 'Not Available';
 
   const name = booking.reporterName || "User";
   const upperName = name ? name.toUpperCase() : "USER";
@@ -672,11 +683,11 @@ async function adminStatusUpdateEmail(booking) {
       📱 Phone: ${booking.reporterPhone || "Not Provided"}
       📍 Address: ${booking.address || "Not Provided"}
       
-      📅 Date: ${booking.date}
+      📅 Date: ${formattedAdminDate}
       📌 Status: ${status}
       
       🚚 Assigned Agent: ${booking.assignedAgent || "Not Assigned"}
-      ⏱ Acceptance Time: ${booking.acceptanceTime || "Not Available"}
+      ⏱ Acceptance Time: ${formattedAdminAcceptanceTime}
       
       ━━━━━━━━━━━━━━━━━━━━━━━
       
@@ -714,10 +725,10 @@ async function adminStatusUpdateEmail(booking) {
             <p><strong>📱 Phone:</strong> ${booking.reporterPhone || "Not Provided"}</p>
             <p><strong>📍 Address:</strong> ${booking.address || "Not Provided"}</p>
             <hr style="margin:15px 0;"/>
-            <p><strong>📅 Date:</strong> ${booking.date}</p>
+            <p><strong>📅 Date:</strong> ${formattedAdminDate}</p>
             <p><strong>📌 Status:</strong> ${status}</p>
             <p><strong>🚚 Agent:</strong> ${booking.assignedAgent || "Not Assigned"}</p>
-            <p><strong>⏱ Acceptance Time:</strong> ${booking.acceptanceTime || "Not Available"}</p>
+            <p><strong>⏱ Acceptance Time:</strong> ${formattedAdminAcceptanceTime}</p>
           </div>
 
           <!-- Status Message -->
@@ -762,7 +773,7 @@ async function adminStatusUpdateEmail(booking) {
 }
 
 async function adminContactEmail(saved) {
-  const to = saved.email;
+  const to = process.env.ADMIN_EMAIL || process.env.EMAIL_USER;
 
   const name = saved.name ? saved.name.toUpperCase() : "USER";
 
