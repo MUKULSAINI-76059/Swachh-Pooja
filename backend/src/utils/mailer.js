@@ -56,6 +56,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
 async function registerEmail(userEmail, name){
   const to = userEmail;
   const upperName = name ? name.toUpperCase() : "USER";
+  const weburl = process.env.FRONTEND_URL || 'http://localhost:5173/login';
  const subject = "🌿 Welcome to SwachhPooja — Let’s Keep Our Streets Clean 🙏";
   const text = `
        🎉 Welcome to 
@@ -80,7 +81,7 @@ async function registerEmail(userEmail, name){
         Our mission is to protect our environment and honor every religious offering with dignity and care. 🌍✨
        
        🚀 Get Started Now:
-       process.env.FRONTEND_URL || 'http://localhost:5173/login'
+        ${weburl}
        
        ━━━━━━━━━━━━━━━━━━━━━━━
        
@@ -138,7 +139,7 @@ async function registerEmail(userEmail, name){
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href=${process.env.FRONTEND_URL || 'http://localhost:5173/login'} target="_blank" rel="noopener"
+            <a href=${weburl} target="_blank" rel="noopener"
                style="display:inline-block;padding:14px 28px;background: linear-gradient(135deg, #166534, #22c55e);color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🚀 Get Started Now
             </a>
