@@ -33,7 +33,7 @@ const Footer = () => (
           </h3>
           <div className="mt-4 space-y-3 text-sm text-primary-foreground/75">
             <p>+91 98773 63729</p>
-            <p>adityakumar@gmail.com</p>
+            <p>swacchpooja1@gmail.com</p>
             <p>Farukh Nagar, Gurgaon, Haryana</p>
           </div>
         </div>

@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { Menu, X, Leaf, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Link, useLocation } from "react-router-dom";
+import { API_BASE_URL } from "@/lib/api";
 
 const Navbar = () => {
   const [open, setOpen] = useState(false);
@@ -48,6 +49,26 @@ const Navbar = () => {
     { label: "Dashboard", href: "/dashboard" },
   ];
 
+  const handleLogout = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      if (token) {
+        await fetch(`${API_BASE_URL}/api/auth/logout`, {
+          method: "POST",
+          credentials: 'include',
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+    } finally {
+      localStorage.removeItem("token");
+      localStorage.removeItem("mock_login");
+      setIsLogged(false);
+      window.location.href = "/";
+    }
+  };
+
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-card/90 backdrop-blur-md border-b">
       <div className="container mx-auto px-4 flex items-center justify-between h-16 max-w-6xl">
@@ -68,12 +89,7 @@ const Navbar = () => {
               size="sm"
               variant="outline"
               className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-              onClick={() => {
-              localStorage.removeItem("token");
-              localStorage.removeItem("mock_login");
-              setIsLogged(false);
-              window.location.href = "/";
-            }}>
+              onClick={handleLogout}>
               <LogOut className="mr-1.5 h-4 w-4" />
               Logout
             </Button>
@@ -111,13 +127,10 @@ const Navbar = () => {
                   size="sm"
                   variant="outline"
                   className="w-full justify-start border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
-                  onClick={() => {
-                  localStorage.removeItem("token");
-                  localStorage.removeItem("mock_login");
-                  setIsLogged(false);
-                  setOpen(false);
-                  window.location.href = "/";
-                }}>
+                  onClick={async () => {
+                    setOpen(false);
+                    await handleLogout();
+                  }}>
                   <LogOut className="mr-1.5 h-4 w-4" />
                   Logout
                 </Button>

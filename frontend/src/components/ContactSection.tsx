@@ -14,7 +14,7 @@ const ContactSection = () => (
       <div className="grid sm:grid-cols-2 gap-4">
         {[
           { icon: Phone, label: "+91 98773 63729", href: "tel:+919877363729" },
-          { icon: Mail, label: "adityakumar@gmail.com", href: "mailto:adityakumar@gmail.com" },
+          { icon: Mail, label: "swacchpooja1@gmail.com", href: "mailto:swacchpooja1@gmail.com" },
           { icon: MapPin, label: OFFICE_ADDRESS, href: "#" },
         ].map((c, i) => (
           <a key={i} href={c.href} className="flex items-center gap-3 bg-card rounded-xl p-4 shadow-sm hover:shadow-md transition-shadow">
