@@ -1,6 +1,6 @@
 <div align="center">
  
-[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Nunito&weight=900&size=46&duration=2600&pause=700&color=FF8C00&background=00000000&center=true&vCenter=true&width=880&height=100&lines=🙏+Swachh+Pooja+—+Clean+the+Sacred;♻️+We+Manage+It+Smartly;🌸+Devotion+%2B+Cleanliness+%3D+True+Pooja;🌱+Green+Future%2C+Pure+Worship;🔥+Where+Faith+Meets+Responsibility)](https://git.io/typing-svg)
+[![Typing SVG](https://readme-typing-svg.herokuapp.com?font=Poppins&weight=900&size=48&duration=2500&pause=600&color=22C55E&center=true&vCenter=true&width=950&height=110&lines=🌿+Swachh+Pooja;🙏+Respecting+Faith+%7C+Protecting+Nature;♻️+Smart+Religious+Waste+Management;🌸+Clean+Streets%2C+Pure+Devotion;🚀+Join+the+Green+Revolution)](https://git.io/typing-svg)
 
 ---
  
