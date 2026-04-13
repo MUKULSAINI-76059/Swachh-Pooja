@@ -9,9 +9,31 @@ dns.setServers(['8.8.8.8'], ['8.8.4.4'])
 
 const app = express();
 
+const normalizeOrigin = (origin) => {
+	if (!origin) return null;
+	const trimmed = origin.trim();
+	if (!trimmed) return null;
+	if (trimmed.startsWith('http://') || trimmed.startsWith('https://')) {
+		return trimmed;
+	}
+	return `https://${trimmed}`;
+};
+
+const allowedOrigins = new Set([
+	normalizeOrigin(process.env.FRONTEND_URL),
+	'http://localhost:5173',
+	'http://localhost:8081',
+	'http://localhost:8082',
+].filter(Boolean));
+
 // Middleware
 app.use(cors({
-  origin: process.env.FRONTEND_URL || 'http://localhost:5173',
+	origin: (origin, callback) => {
+		if (!origin || allowedOrigins.has(origin)) {
+			return callback(null, true);
+		}
+		return callback(new Error(`CORS blocked for origin: ${origin}`));
+	},
   credentials: true,
 }));
 app.use(cookieParser());
