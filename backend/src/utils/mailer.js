@@ -21,6 +21,8 @@ if (transporter) {
 }
 
 const sendEmail = async ({ to, subject, text, html }) => {
+   console.log("📧 Email function called!");  // ADD KARO
+  console.log("📧 Sending to:", to);   
   try {
     if (!transporter) {
       return { success: false, reason: 'email_not_configured' };
