@@ -1,23 +1,12 @@
 const nodemailer = require('nodemailer');
 
-const hasOAuthConfig =
-  process.env.EMAIL_USER &&
-  process.env.CLIENT_ID &&
-  process.env.CLIENT_SECRET &&
-  process.env.REFRESH_TOKEN;
-
-const transporter = hasOAuthConfig
-  ? nodemailer.createTransport({
-      service: 'gmail',
-      auth: {
-        type: 'OAuth2',
-        user: process.env.EMAIL_USER,
-        clientId: process.env.CLIENT_ID,
-        clientSecret: process.env.CLIENT_SECRET,
-        refreshToken: process.env.REFRESH_TOKEN,
-      },
-    })
-  : null;
+const transporter = nodemailer.createTransport({
+  service: "gmail",
+  auth: {
+    user: process.env.EMAIL_USER,
+    pass: process.env.EMAIL_PASSWORD
+  }
+});
 
 if (transporter) {
   transporter.verify((error) => {
