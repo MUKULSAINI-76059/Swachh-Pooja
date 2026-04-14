@@ -23,9 +23,9 @@ if (transporter) {
   console.warn('Email transporter not configured. Set EMAIL_USER, CLIENT_ID, CLIENT_SECRET, and REFRESH_TOKEN.');
 }
 
-const sendEmail = async ({ to, subject, text, html }) => {
+  const sendEmail = async ({ to, subject, text, html }) => {
    console.log("📧 Email function called!");  // ADD KARO
-  console.log("📧 Sending to:", to);   
+   console.log("📧 Sending to:", to);   
   try {
     if (!transporter) {
       return { success: false, reason: 'email_not_configured' };
@@ -39,7 +39,6 @@ const sendEmail = async ({ to, subject, text, html }) => {
       html,
     });
 
-    console.log(" FULL INFO:", info);
 
     return { success: true, messageId: info.messageId };
   } catch (error) {
