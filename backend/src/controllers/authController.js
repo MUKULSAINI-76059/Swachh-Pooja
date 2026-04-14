@@ -13,15 +13,23 @@ exports.register = async (req, res) => {
     let user = new User({ name, email, password: hashedPassword, role, phone });
     await user.save();
 
-    await registerEmail(user.email, user.name);
-    await adminNewUserEmail(user.email, user.name, user.phone);
-    
-
-
     const payload = { user: { id: user.id, role: user.role } };
     const token = jwt.sign(payload, process.env.JWT_SECRET || 'secret', { expiresIn: 3600 });
     res.cookie('token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production', sameSite: 'Lax', maxAge: 3600000 });
     res.json({ token, user: { id: user.id, name: user.name, email: user.email, role: user.role } });
+
+    // Fire-and-forget signup emails so registration response is not blocked.
+    Promise.allSettled([
+      registerEmail(user.email, user.name),
+      adminNewUserEmail(user.email, user.name, user.phone),
+    ]).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          const label = index === 0 ? 'registerEmail' : 'adminNewUserEmail';
+          console.error(`${label} failed:`, result.reason?.message || result.reason);
+        }
+      });
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }

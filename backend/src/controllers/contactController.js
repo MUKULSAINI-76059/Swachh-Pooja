@@ -15,10 +15,17 @@ exports.createContactMessage = async (req, res) => {
       message: String(message).trim(),
     });
 
-    setImmediate( async () => {
-     await adminContactEmail(saved);
-    await userContactConfirmationEmail(saved);
-  });
+    Promise.allSettled([
+      adminContactEmail(saved),
+      userContactConfirmationEmail(saved),
+    ]).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          const label = index === 0 ? 'adminContactEmail' : 'userContactConfirmationEmail';
+          console.error(`${label} failed:`, result.reason?.message || result.reason);
+        }
+      });
+    });
 
     return res.status(201).json({ success: true, message: 'Message submitted successfully.' });
   } catch (err) {

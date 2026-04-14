@@ -11,23 +11,18 @@ exports.createBooking = async (req, res) => {
     const newBooking = new Booking(bookingPayload);
     const booking = await newBooking.save();
     const populatedBooking = await booking.populate('user', 'email name phone');
-    
-
-
-    // Respond immediately to user - don't wait for emails
     res.json(populatedBooking);
 
-
-     // ✅ Background email (non-blocking)
-    setImmediate(async () => {
-      try {
-        await adminRequestEmail(populatedBooking);
-        await userRequestConfirmationEmail(populatedBooking, true);
-       // For agent notification
-
-      } catch (emailError) {
-        console.error('Email Error:', emailError.message);
-      }
+    Promise.allSettled([
+      adminRequestEmail(populatedBooking),
+      userRequestConfirmationEmail(populatedBooking, true),
+    ]).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          const label = index === 0 ? 'adminRequestEmail' : 'userRequestConfirmationEmail';
+          console.error(`${label} failed:`, result.reason?.message || result.reason);
+        }
+      });
     });
 
   } catch (err) {
@@ -63,13 +58,18 @@ exports.updateBookingStatus = async (req, res) => {
     if (assignedAgent) updateFields.assignedAgent = assignedAgent;
     if (acceptanceTime) updateFields.acceptanceTime = acceptanceTime;
     const booking = await Booking.findByIdAndUpdate(req.params.id, updateFields, { new: true }).populate('user', 'email name phone');
-
-    // Respond immediately
     res.json(booking);
 
-    setImmediate(async () => {
-      await bookingStatusUpdateEmail(booking);
-       await adminStatusUpdateEmail(booking);
+    Promise.allSettled([
+      bookingStatusUpdateEmail(booking),
+      adminStatusUpdateEmail(booking),
+    ]).then((results) => {
+      results.forEach((result, index) => {
+        if (result.status === 'rejected') {
+          const label = index === 0 ? 'bookingStatusUpdateEmail' : 'adminStatusUpdateEmail';
+          console.error(`${label} failed:`, result.reason?.message || result.reason);
+        }
+      });
     });
   } catch (err) {
     if (res.headersSent) {
