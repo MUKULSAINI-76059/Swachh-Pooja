@@ -39,7 +39,7 @@ const sendEmail = async ({ to, subject, text, html }) => {
       html,
     });
 
-    console.log(`Email sent to ${to}: ${info.messageId}`);
+    console.log(" FULL INFO:", info);
 
     return { success: true, messageId: info.messageId };
   } catch (error) {
@@ -47,6 +47,8 @@ const sendEmail = async ({ to, subject, text, html }) => {
     return { success: false, reason: error.message };
   }
 };
+
+
 
 const formatIndiaDateTime = (value) => {
   if (!value) return null;
