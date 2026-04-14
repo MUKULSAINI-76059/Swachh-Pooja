@@ -79,7 +79,7 @@ const formatIndiaDateTime = (value) => {
 async function registerEmail(userEmail, name){
   const to = userEmail;
   const upperName = name ? name.toUpperCase() : "USER";
-  const weburl = process.env.FRONTEND_URL || 'http://localhost:5173/login';
+  const weburl = 'https://swachh-pooja.vercel.app/';
  const subject = "🌿 Welcome to SwachhPooja — Let’s Keep Our Streets Clean 🙏";
   const text = `
        🎉 Welcome to 
@@ -271,7 +271,7 @@ async function adminNewUserEmail(userEmail, name, phone) {
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173/admin'}" target="_blank"
+            <a href="https://swachh-pooja.vercel.app/" target="_blank"
                style="display:inline-block;padding:14px 28px;background: linear-gradient(135deg, #7f1d1d, #ef4444);color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🔍 View in Admin Panel
             </a>
@@ -376,7 +376,7 @@ async function adminRequestEmail(request) {
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173/admin'}" target="_blank"
+            <a href="https://swachh-pooja.vercel.app/" target="_blank"
                style="display:inline-block;padding:14px 28px;background: linear-gradient(135deg, #1e3a8a, #3b82f6);color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🔍 View Request
             </a>
@@ -480,7 +480,7 @@ async function userRequestConfirmationEmail(populatedBooking, isAgentNotificatio
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" target="_blank"
+            <a href="https://swachh-pooja.vercel.app/" target="_blank"
                style="display:inline-block;padding:14px 28px;background: linear-gradient(135deg, #166534, #22c55e);color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🔍 Track Your Request
             </a>
@@ -607,7 +607,7 @@ async function bookingStatusUpdateEmail(booking) {
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173'}" target="_blank"
+            <a href="https://swachh-pooja.vercel.app/" target="_blank"
                style="display:inline-block;padding:14px 28px;background: ${color};color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🔍 View Request
             </a>
@@ -738,7 +738,7 @@ async function adminStatusUpdateEmail(booking) {
 
           <!-- Button -->
           <div style="text-align:center;margin:30px 0;">
-            <a href="${process.env.FRONTEND_URL || 'http://localhost:5173/admin'}" target="_blank"
+            <a href="https://swachh-pooja.vercel.app/" target="_blank"
                style="display:inline-block;padding:14px 28px;background: ${color};color:#fff;text-decoration:none;border-radius:8px;font-size:15px;font-weight:bold;">
               🔍 View in Admin Panel
             </a>
