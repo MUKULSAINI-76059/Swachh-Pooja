@@ -45,6 +45,12 @@ The platform connects devotees, volunteers, and administrators to ensure cleaner
 | 🛡️ **Admin Panel** | Manage reports, users, and community actions |
  
 ---
+
+
+## 🌐 Live Demo
+👉 **[https://swachh-pooja.vercel.app/](https://swachh-pooja.vercel.app/)**
+
+---
  
 ## 🛠️ Tech Stack
  
