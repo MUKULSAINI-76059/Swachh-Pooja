@@ -22,9 +22,14 @@
  
 ## 🪔 About the Project
  
-**Swachh Pooja** is a full-stack web application inspired by the **Swachh Bharat Mission**, focused on promoting **cleanliness and hygiene around religious and pooja spaces**. It bridges the gap between devotion and environmental responsibility by empowering communities to report, track, and improve the sanitation of temples, ghats, and other sacred sites.
- 
-Whether you're a devotee, a volunteer, or an administrator — Swachh Pooja brings everyone together for a cleaner, more respectful worship experience.
+**Swachh Pooja** is a full-stack web application inspired by the Swachh Bharat Mission that focuses on maintaining cleanliness and dignity around religious and pooja spaces.
+
+It allows users to report discarded or damaged religious items such as idols, pictures, and pooja materials by uploading images and location details.
+
+A dedicated cleanup team then collects and properly disposes or recycles these items in a respectful and environmentally friendly manner.
+
+The platform connects devotees, volunteers, and administrators to ensure cleaner and more sustainable worship environments.
+
  
 ---
  
